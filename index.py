@@ -32,7 +32,7 @@ CORS(app)
 
 # === CONFIG FROM ENV ===
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS", "tokengen213@gmail.com")
-EMAIL_APP_PASSWORD = os.getenv("EMAIL_APP_PASSWORD", "voeolarxaxvtyuzf")
+EMAIL_APP_PASSWORD = os.getenv("EMAIL_APP_PASSWORD", "voeo larx axvt yuzf")
 
 # === GLOBALS ===
 token_cache = {"tokens": [], "user_usage": {}}
