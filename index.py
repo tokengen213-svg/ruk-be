@@ -346,6 +346,17 @@ def sign_url_internal(url, token):
                     if pssh_elem is not None and pssh_elem.text:
                         pssh_b64 = pssh_elem.text.strip()
                         break
+def sign_from_content_id_internal(content_id, key, hdnts, user_ids, token):
+    # 1) Build raw media-cdn url from contentId
+    raw_url = build_media_cdn_link(content_id, key, hdnts, user_ids)
+
+    # 2) Sign using existing signer
+    signed = sign_url_internal(raw_url, token)
+
+    if "error" in signed:
+        return {"success": False, "error": signed["error"], "source_url": raw_url}
+
+    return {"success": True, "source_url": raw_url, **signed}
 
         if not pssh_b64:
             return {"error": "PSSH not found in MPD"}
