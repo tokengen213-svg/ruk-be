@@ -414,6 +414,31 @@ def log_request(url):
         recent_logs.pop(0)
 
 # === FLASK ROUTES ===
+@app.route('/sign_from_content_id', methods=['POST'])
+def sign_from_content_id():
+    payload = request.get_json(silent=True) or {}
+
+    content_id = payload.get("contentId")
+    key = payload.get("key")
+    hdnts = payload.get("hdnts")
+    user_ids = payload.get("userIds")
+    token = payload.get("token")
+
+    missing = [
+        f for f, v in [
+            ("contentId", content_id),
+            ("key", key),
+            ("hdnts", hdnts),
+            ("userIds", user_ids),
+            ("token", token),
+        ] if v in (None, "")
+    ]
+    if missing:
+        return jsonify({"success": False, "error": f"Missing required fields: {', '.join(missing)}"}), 400
+
+    result = sign_from_content_id_internal(content_id, key, hdnts, user_ids, token)
+    return jsonify(result), (200 if result.get("success") else 500)
+
 @app.route('/favicon.ico')
 def favicon():
     return "", 204
